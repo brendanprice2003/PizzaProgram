@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PizzaProgram
 {
     class Program
     {
-        public int tPrice = 0;
+        public static double tPrice = 0;
 
         static string ParsePizzaSize() // Sanitize input
         {
@@ -16,25 +14,17 @@ namespace PizzaProgram
                               "2. Medium Size Pizza\n" +
                               "3. Large Size Pizza\n");
             string input = Console.ReadLine().ToLower();
-            string output = "";
+            string output = ""; // "" = error
 
             // Number input
-            if (input == "1")      { output = "s"; }
-            else if (input == "2") { output = "m"; }
-            else if (input == "3") { output = "l"; }
-
-            // Text input
-            else if (input == "small")  { output = "s"; }
-            else if (input == "medium") { output = "m"; }
-            else if (input == "large")  { output = "l"; }
-            else if (input == "small pizza")  { output = "s"; }
-            else if (input == "medium pizza") { output = "m"; }
-            else if (input == "large pizza")  { output = "l"; }
+            if (input.Contains("1") || input.Contains("small")) { output = "s"; }
+            else if (input.Contains("2") || input.Contains("medium")) { output = "m"; }
+            else if (input.Contains("3") || input.Contains("large")) { output = "l"; }
 
             // User has entered something incorrect
             else
             {
-                Console.WriteLine("Please Enter A Valid Pizza Size; Try Again.. (Press enter to try again)");
+                Console.WriteLine("Please Enter A Valid Pizza Size; Please Try Again.. (Press enter to try again)");
                 Console.ReadLine();
                 ParsePizzaSize();
             };
@@ -55,28 +45,38 @@ namespace PizzaProgram
             int output = 0; // 0 = error
 
             // Number input
-            if (input == "1") { output = 1; }
-            else if (input == "2") { output = 2; }
-            else if (input == "3") { output = 3; }
-            else if (input == "4") { output = 4; }
+            if (input.Contains("1") || input.Contains("one")) { output = 1; }
+            else if (input.Contains("2") || input.Contains("two")) { output = 2; }
+            else if (input.Contains("3") || input.Contains("three")) { output = 3; }
+            else if (input.Contains("4") || input.Contains("four")) { output = 4; }
 
-            // Text input
-            else if (input == "one") { output = 1; }
-            else if (input == "two") { output = 2; }
-            else if (input == "three") { output = 3; }
-            else if (input == "four") { output = 4; }
-            else if (input == "one topping") { output = 1; }
-            else if (input == "two toppping") { output = 2; }
-            else if (input == "three topping") { output = 3; }
-            else if (input == "four topping") { output = 4; }
-
-            // Alternate text input
-            else if (input == "one topping") { output = 1; }
-            else if (input == "two toppping") { output = 2; }
-            else if (input == "three topping") { output = 3; }
-            else if (input == "four topping") { output = 4; }
+            // User has entered something incorrect
+            else
+            {
+                Console.WriteLine("Please Enter A Valid Toppings Amount; Please Try Again.. (Press enter to try again)");
+                Console.ReadLine();
+                ParseToppingsAmount();
+            }
 
             return output;
+        }
+
+        static string DoBill(double tPrice, string delivChoice)
+        {
+            string billString = "";
+            delivChoice = delivChoice.ToLower();
+
+            // Code
+            if (billString == "Y")
+            {
+                tPrice += 2.50;
+            }
+            else if (billString == "N")
+            {
+
+            }
+
+            return billString;
         }
 
         static void Main(string[] args)
@@ -88,6 +88,23 @@ namespace PizzaProgram
             // Functions return fixed strings
             string pSize = ParsePizzaSize();
             int tAmount = ParseToppingsAmount();
+
+            // Do some madderz maf
+            if (pSize == "s") { tPrice += 3.25; }
+            else if (pSize == "m") { tPrice += 5.50; }
+            else if (pSize == "l") { tPrice += 7.15; }
+
+            // Do sum even more madderz maf ennit
+            if (tAmount == 1) { tPrice += 0.75; }
+            else if (tAmount == 2) { tPrice += 1.35; }
+            else if (tAmount == 3) { tPrice += 2.00; }
+            else if (tAmount == 4) { tPrice += 2.50; }
+
+            // Check if user wants it delivered
+            Console.Write("And Do You Want That Delivered Or Not? [Y/N]");
+            string delivChoice = Console.ReadLine();
+
+            // DoBill(tPrice, delivChoice);
         }
     }
 }
